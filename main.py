@@ -2,6 +2,7 @@ import os
 from dotenv import main
 import requests
 import json
+import xml.etree.ElementTree
 
 main.load_dotenv('./.env')
 
@@ -12,13 +13,13 @@ tokenReq = requests.post('https://opendata.nationalrail.co.uk/authenticate', dat
 
 print(tokenReq.status_code)
 
-data = tokenReq.text
-data = json.loads(data)
-token = data.get("token")
+dataTok = json.loads(tokenReq.text)
+token = dataTok.get("token")
 
 print(token)
 
 
-dataReq = requests.post("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/ticket-restrictions",data={'X-Auth-Token':token})
+dataReq = requests.get("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/ticket-restrictions",headers={'X-Auth-Token':token})
 
 print(dataReq.status_code)
+data = dataReq.text
