@@ -1,8 +1,12 @@
 import os
+
+import pandas as pd
 from dotenv import main
 import requests
 import json
-import xml.etree.ElementTree
+import xml.etree.ElementTree as ET
+import untangle
+import pandas as pd
 
 main.load_dotenv('./.env')
 
@@ -23,3 +27,9 @@ dataReq = requests.get("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/
 
 print(dataReq.status_code)
 data = dataReq.text
+print(data)
+root = ET.fromstring(data)
+
+parsedDict = untangle.parse(root)
+df = pd.DataFrame(parsedDict)
+df
