@@ -42,5 +42,11 @@ df = pd.DataFrame(data)
 # End block
 
 pd.set_option('display.max_columns', None)
+# print(df)
+
+removeText = '{http://nationalrail.co.uk/xml/ticketrestriction}'
+newDict = {col: col.replace(removeText, '') for col in df.columns}
+
+df.rename(columns=newDict, inplace=True)
+
 print(df)
-#
