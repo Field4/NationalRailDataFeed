@@ -15,21 +15,26 @@ password = os.getenv("password")
 
 tokenReq = requests.post('https://opendata.nationalrail.co.uk/authenticate', data={'Content-Type':'application/x-www-form-urlencoded','username':username, 'password':password}, )
 
-print(tokenReq.status_code)
+#print(tokenReq.status_code)
 
 dataTok = json.loads(tokenReq.text)
 token = dataTok.get("token")
 
-print(token)
+#print(token)
 
 
 dataReq = requests.get("https://opendata.nationalrail.co.uk/api/staticfeeds/4.0/ticket-restrictions",headers={'X-Auth-Token':token})
 
-print(dataReq.status_code)
+#print(dataReq.status_code)
 data = dataReq.text
-print(data)
+
 root = ET.fromstring(data)
 
-parsedDict = untangle.parse(root)
-df = pd.DataFrame(parsedDict)
-df
+print(root.tag)
+print(root.attrib)
+print('children:')
+
+for child in root:
+    print(child.tag, child.attrib)
+
+print(root[0][3].text,root[0][4].text,root[0][5].text)
